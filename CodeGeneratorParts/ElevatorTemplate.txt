@@ -1,0 +1,165 @@
+import time
+def wait():
+    print("No Elevators Are Available")
+global Elev1Busy
+global currentElev1Floor
+currentElev1Floor = 1
+Elev1Busy = False
+
+def elev1Idle(x):
+    global Elev1Busy
+    global currentElev1Floor
+    currentElev1Floor = x
+    Elev1Busy = False
+
+def elev1Down(x, r):
+    global currentElev1Floor
+    y = currentElev1Floor
+    f = 1
+    for i in range(abs(x - r)):
+        currentElev1Floor = y - f
+        f = f + 1
+        print("Floor " + str(currentElev1Floor))
+        time.sleep(2)
+
+
+def elev1Up(x, r):
+    global currentElev1Floor
+    y = currentElev1Floor
+    f = 1
+    for i in range(abs(x - r)):
+        currentElev1Floor = y + f
+        f = f + 1
+        print("Floor " + str(currentElev1Floor))
+        time.sleep(2)
+
+def elev1GoFloor(n, direction):
+	#stuff
+    global currentElev1Floor
+    global Elev1Busy
+    Elev1Busy == True
+    if currentElev1Floor > n:
+        elev1Down(currentElev1Floor, n)
+    elif currentElev1Floor < n:
+        elev1Up(currentElev1Floor, n)
+    print("Doors Opening")
+    time.sleep(2)
+    print("Doors open")
+    time.sleep(2)
+    if direction != 3:
+        floorSelected = int(input("What floor, 1-5, would you like to go to? "))
+        if floorSelected == 1:
+            lightButton1(1)
+
+
+
+
+
+
+
+
+    else:
+        print("Doors Closing")
+        time.sleep(2)
+        print("Doors Closed")
+    elev1Idle(n)
+
+def lightButton1(c):
+    B1 = c
+    if B1:
+        print("Button 1 lit")
+        if Elev1Busy == False:
+            time.sleep(1)
+            print("Doors Closing")
+            time.sleep(2)
+            print("Doors Closed")
+            time.sleep(1)
+            print("Person going to Floor 1")
+            time.sleep(1)
+            elev1GoFloor(1, 3)
+
+        elif Elev2Busy == False:
+            time.sleep(1)
+            print("Doors Closing")
+            time.sleep(2)
+            print("Doors Closed")
+            time.sleep(1)
+            print("Person going to Floor 1")
+            time.sleep(1)
+            elev2GoFloor(1, 3)
+	
+        else:
+            wait()
+    else:
+        print("Button 1 unlit")
+
+def lightButtonF1Up(c):
+    BF1U = c
+    if BF1U:
+        print("Button Floor 1 Up lit")
+        print("elev going to Floor 1")
+        if Elev1Busy == False:
+            time.sleep(1)
+            elev1GoFloor(1, 0)
+        elif Elev2Busy == False:
+            time.sleep(1)
+            elev1GoFloor(1, 0)
+        else:
+            wait()
+    else:
+        print("Button Floor 1 Up unlit")
+
+
+def lightButtonF1Down(c):
+    BF1D = c
+    if BF1D:
+        print("Button Floor 1 Down lit")
+        print("elev going to Floor 1")
+        if Elev1Busy == False:
+            time.sleep(1)
+            elev1GoFloor(1, 1)
+        elif Elev2Busy == False:
+            time.sleep(1)
+            elev2GoFloor(1, 1)
+        else:
+            wait()
+    else:
+        print("Button Floor 1 Down unlit")
+
+def personInputFloor():
+        floor = str(input("What Floor are you starting on?"))
+
+        if floor == "1":
+            personInputDirection(floor)
+        else:
+            print("Invalid choice, please try again")
+            personInputFloor()
+
+def personInputDirection(floor):
+    desiredDirection = str(input("Would you like to go up or down?"))
+    if desiredDirection.lower() != "up" and desiredDirection.lower() != "down":
+        print("Invalid choice, please try again")
+        personInputDirection(floor)
+    elif desiredDirection.lower() == "down" and floor == "1":
+        print("You cannot go down on floor 1")
+        personInputDirection(floor)
+    elif desiredDirection.lower() == "up" and floor == numFloors:
+        print("You cannot go up on Floor numFloors")
+        personInputDirection(floor)
+    else:
+        personPressesButton(floor, desiredDirection.lower())
+
+def personPressesButton(floor, desiredDirection):
+    if floor == "1":
+        if desiredDirection.lower() == "up":
+            lightButtonF1Up(1)
+    if floor == "2":
+        if desiredDirection.lower() == "up":
+            lightButtonF2Up(1)
+        elif desiredDirection.lower() == "down":
+            lightButtonF2Down(1)
+    if floor == "numFloors":
+        if desiredDirection.lower() == "down": 
+                lightButtonFnumFloorsDown(1)
+
+personInputFloor()

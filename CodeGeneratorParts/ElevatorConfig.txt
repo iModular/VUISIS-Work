@@ -1,0 +1,2 @@
+Number of Elevators: 3
+Number of Floors: 4
